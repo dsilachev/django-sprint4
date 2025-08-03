@@ -46,7 +46,9 @@ class CategoryListView(ListView, PostQueryMixin):
         return context
 
 
-class PostCreateView(LoginRequiredMixin, PostMixin, ProfileUrlMixin, CreateView):
+class PostCreateView(
+    LoginRequiredMixin, PostMixin, ProfileUrlMixin, CreateView
+):
     form_class = PostForm
 
     def form_valid(self, form):
@@ -54,18 +56,24 @@ class PostCreateView(LoginRequiredMixin, PostMixin, ProfileUrlMixin, CreateView)
         return super().form_valid(form)
 
 
-class PostUpdateView(LoginRequiredMixin, AuthorMixin, PostMixin,
-                    PostDetailMixin, UpdateView):
+class PostUpdateView(
+    LoginRequiredMixin, AuthorMixin, PostMixin, PostDetailMixin, UpdateView
+):
     form_class = PostForm
     pk_url_kwarg = 'post_id'
 
     def handle_no_permission(self):
-        return redirect('blog:post_detail',
-                      post_id=self.kwargs.get('post_id'))
+        return redirect(
+            reverse(
+                'blog:post_detail',
+                kwargs={'post_id': self.kwargs.get('post_id')}
+            )
+        )
 
 
-class PostDeleteView(LoginRequiredMixin, AuthorMixin,
-                    PostMixin, ProfileUrlMixin, DeleteView):
+class PostDeleteView(
+    LoginRequiredMixin, AuthorMixin, PostMixin, ProfileUrlMixin, DeleteView
+):
     pk_url_kwarg = 'post_id'
 
 
@@ -97,12 +105,15 @@ class ProfileListView(ListView, PostQueryMixin):
     paginate_by = COUNT_POST_DISPLAYED
 
     def get_user(self):
-        return get_object_or_404(User, username=self.kwargs['username'])
+        return get_object_or_404(
+            User,
+            username=self.kwargs['username']
+        )
 
     def get_queryset(self):
-        queryset = self.get_posts_with_filter() if self.request.user != self.get_user() \
-                 else self.get_posts()
-        return queryset.filter(author=self.get_user())
+        if self.request.user == self.get_user():
+            return self.get_posts().filter(author=self.get_user())
+        return self.get_posts_with_filter().filter(author=self.get_user())
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -123,21 +134,28 @@ class CommentCreateView(LoginRequiredMixin, CommentMixin, CreateView):
     form_class = CommentForm
 
     def form_valid(self, form):
-        form.instance.post = get_object_or_404(Post, pk=self.kwargs['post_id'])
+        form.instance.post = get_object_or_404(
+            Post,
+            pk=self.kwargs['post_id']
+        )
         form.instance.author = self.request.user
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse('blog:post_detail',
-                      kwargs={'post_id': self.kwargs['post_id']})
+        return reverse(
+            'blog:post_detail',
+            kwargs={'post_id': self.kwargs['post_id']}
+        )
 
 
-class CommentUpdateView(LoginRequiredMixin, AuthorMixin,
-                      CommentMixin, PostDetailMixin, UpdateView):
+class CommentUpdateView(
+    LoginRequiredMixin, AuthorMixin, CommentMixin, PostDetailMixin, UpdateView
+):
     form_class = CommentForm
     pk_url_kwarg = 'comment_id'
 
 
-class CommentDeleteView(LoginRequiredMixin, AuthorMixin,
-                      CommentMixin, PostDetailMixin, DeleteView):
+class CommentDeleteView(
+    LoginRequiredMixin, AuthorMixin, CommentMixin, PostDetailMixin, DeleteView
+):
     pk_url_kwarg = 'comment_id'

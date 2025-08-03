@@ -13,7 +13,7 @@ urlpatterns = [
     # Админка
     path('admin/', admin.site.urls),
 
-    #Статика
+    # Статика
     path('pages/', include('pages.urls')),
 
     # Аутентификация

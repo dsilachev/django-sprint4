@@ -7,7 +7,8 @@ from blog.models import Comment, Post
 
 
 class PostQueryMixin:
-    """"Работа со статьями"""
+    """Работа со статьями."""
+
     def get_posts(self):
         return (
             Post.objects
@@ -28,32 +29,42 @@ class PostQueryMixin:
 
 
 class PostMixin:
-    """Настройки для формы постов"""
+    """Настройки для формы постов."""
+
     model = Post
     template_name = 'blog/create.html'
 
 
 class AuthorMixin(UserPassesTestMixin):
-    """Проверяет, является ли пользователь автором"""
+    """Проверяет, является ли пользователь автором."""
+
     def test_func(self):
         post = self.get_object()
         return self.request.user == post.author
 
 
 class CommentMixin:
-    """Настройки для формы комментариев"""
+    """Настройки для формы комментариев."""
+
     model = Comment
     template_name = 'blog/comment.html'
 
 
 class ProfileUrlMixin:
-    """Перенаправляет в профиль после действий"""
+    """Перенаправляет в профиль после действий."""
+
     def get_success_url(self):
-        return reverse('blog:profile',
-                     kwargs={'username': self.request.user.username})
+        return reverse(
+            'blog:profile',
+            kwargs={'username': self.request.user.username}
+        )
 
 
 class PostDetailMixin:
+    """Перенаправляет на страницу поста."""
+
     def get_success_url(self):
-        return reverse('blog:post_detail',
-                     kwargs={'post_id': self.kwargs['post_id']})
+        return reverse(
+            'blog:post_detail',
+            kwargs={'post_id': self.kwargs['post_id']}
+        )
