@@ -4,7 +4,7 @@ from . import views
 app_name = 'blog'
 
 urlpatterns = [
-    # Мэйн
+    # Главная страница
     path('', views.PostListView.as_view(), name='index'),
 
     # Посты
@@ -19,32 +19,44 @@ urlpatterns = [
             path('delete/', views.PostDeleteView.as_view(), name='delete_post'),
 
             # Комментарии
-            path('comment/',
+            path(
+                'comment/',
                 views.CommentCreateView.as_view(),
-                name='add_comment'),
+                name='add_comment'
+            ),
 
-            path('edit_comment/<int:comment_id>/',
+            path(
+                'edit_comment/<int:comment_id>/',
                 views.CommentUpdateView.as_view(),
-                name='edit_comment'),
+                name='edit_comment'
+            ),
 
-            path('delete_comment/<int:comment_id>/',
+            path(
+                'delete_comment/<int:comment_id>/',
                 views.CommentDeleteView.as_view(),
-                name='delete_comment'),
+                name='delete_comment'
+            ),
         ])),
     ])),
 
     # Профили
     path('profile/', include([
-        path('<str:username>/',
+        path(
+            '<str:username>/',
             views.ProfileListView.as_view(),
-            name='profile'),
-        path('',
+            name='profile'
+        ),
+        path(
+            '',
             views.ProfileUpdateView.as_view(),
-            name='edit_profile'),
+            name='edit_profile'
+        ),
     ])),
 
     # Категории
-    path('category/<slug:category_slug>/',
+    path(
+        'category/<slug:category_slug>/',
         views.CategoryListView.as_view(),
-        name='category_posts'),
+        name='category_posts'
+    ),
 ]
