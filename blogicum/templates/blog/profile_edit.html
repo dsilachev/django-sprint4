@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% block title %}
+  Редактируем данные пользователя {{ request.user.username }}
+{% endblock %}
+
+{% block content %}
+  <div class="card col-6">
+    <div class="card-header">
+      Редактируем данные пользователя - {{ request.user.username }}
+    </div>
+    <div class="card-body">
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        {% bootstrap_button button_type="submit" content="Сохранить" %}
+      </form>
+    </div>
+  </div>
+{% endblock content %}
