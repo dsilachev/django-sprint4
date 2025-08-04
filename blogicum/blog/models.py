@@ -2,7 +2,9 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
 
-from blog.constants import COUNT_CHAR_DISPLAYED
+from blogicum.constants import (
+    COUNT_CHAR_DISPLAYED, CATEGORY_MAX_LEN, LOC_MAX_LEN
+)
 from core.models import PublishedModel, TitleModel
 
 
@@ -12,7 +14,7 @@ User = get_user_model()
 class Category(TitleModel):
     description = models.TextField(verbose_name='Описание')
     slug = models.SlugField(
-        max_length=64,
+        max_length=CATEGORY_MAX_LEN,
         unique=True,
         verbose_name='Идентификатор',
         help_text=(
@@ -28,7 +30,7 @@ class Category(TitleModel):
 
 class Location(PublishedModel):
     name = models.CharField(
-        max_length=256,
+        max_length=LOC_MAX_LEN,
         verbose_name='Название места',
     )
 

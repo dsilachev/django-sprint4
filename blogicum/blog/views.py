@@ -6,7 +6,7 @@ from django.views.generic import (
     CreateView, DeleteView, DetailView, ListView, UpdateView
 )
 
-from blog.constants import COUNT_POST_DISPLAYED
+from blogicum.constants import COUNT_POST_DISPLAYED
 from blog.forms import CommentForm, PostForm
 from blog.models import Category, Post
 from blog.mixins import (

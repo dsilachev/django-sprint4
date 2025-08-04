@@ -1,5 +1,6 @@
 from django.db import models
-from blog.constants import COUNT_CHAR_DISPLAYED
+
+from blogicum.constants import COUNT_CHAR_DISPLAYED, TITLE_MAX_LENGTH
 
 
 class PublishedModel(models.Model):
@@ -20,7 +21,7 @@ class PublishedModel(models.Model):
 class TitleModel(PublishedModel):
 
     title = models.CharField(
-        max_length=256,
+        max_length=TITLE_MAX_LENGTH,
         verbose_name='Заголовок',
         help_text='Название, не более 256 символов.',
     )
